@@ -10,6 +10,7 @@ import javax.servlet.ServletContextEvent;
 public class ObjectifyHelper implements ServletContextListener {
   public void contextInitialized(ServletContextEvent event) {
     ObjectifyService.register(Player.class);
+    ObjectifyService.register(TerrainChunk.class);
   }
 
   public void contextDestroyed(ServletContextEvent event) {

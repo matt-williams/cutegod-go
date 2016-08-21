@@ -37,10 +37,10 @@ public class PlayerResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public PlayerView get() {
-    Player player = ofy().load().type(Player.class).id(this.id).now();
+    Player player = ofy().load().type(Player.class).id(id).now();
     PlayerView playerView = null;
     if (player != null) {
-      playerView = new PlayerView(this.id, player.displayName);
+      playerView = new PlayerView(id, player.displayName);
       if (player.latitude != null) {
         playerView.setLatitude(player.latitude);
       }
@@ -56,7 +56,7 @@ public class PlayerResource {
   public Response put(PlayerView playerView, @Context HttpServletRequest httpServletRequest) {
     if (httpServletRequest.getUserPrincipal() != null) {
       String emailAddress = httpServletRequest.getUserPrincipal().getName();
-      Player player = ofy().load().type(Player.class).id(this.id).now();
+      Player player = ofy().load().type(Player.class).id(id).now();
       if ((player != null) &&
           (player.emailAddress.equals(emailAddress))) {
         if (playerView.getDisplayName() != null) {
@@ -79,7 +79,7 @@ public class PlayerResource {
   @Produces(MediaType.APPLICATION_JSON)
   public List<PlayerView> getNearby() {
     List<PlayerView> playerViews = new ArrayList<PlayerView>();
-    Player player = ofy().load().type(Player.class).id(this.id).now();
+    Player player = ofy().load().type(Player.class).id(id).now();
     if (player != null) {
       if ((player.latitude != null) &&
           (player.longitude != null)) {
@@ -91,7 +91,7 @@ public class PlayerResource {
         // TODO: Do this properly - should divide into 4 segments and search in each separately
         List<Player> players = ofy().load().type(Player.class).filter("mortonLocation >", northEast).filter("mortonLocation <", southWest).list();
         for (Player otherPlayer : players) {
-          PlayerView playerView = new PlayerView(this.id, otherPlayer.displayName);
+          PlayerView playerView = new PlayerView(id, otherPlayer.displayName);
           playerView.setLatitude(otherPlayer.latitude);
           playerView.setLongitude(otherPlayer.longitude);
           playerViews.add(playerView);

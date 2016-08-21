@@ -79,7 +79,7 @@ public class PlayersResource {
   }
 
   @Path("{id}")
-  public PlayerResource getTodo(@PathParam("id") String id) {
+  public PlayerResource getPlayer(@PathParam("id") String id) {
     return new PlayerResource(uriInfo, request, id);
   }
 }

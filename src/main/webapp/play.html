@@ -54,7 +54,18 @@ function getNearby() {
     }
   }
   xhr.send();
-  return false;
+}
+function getTerrain(latitude, longitude) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/api/terrain/" + latitude + "," + longitude, true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      var json = JSON.parse(xhr.responseText);
+      console.log(json);
+      renderTerrain(document.getElementById('terrain'), json.data);
+    }
+  }
+  xhr.send();
 }
 function doSubmit(displayName) {
   var xhr = new XMLHttpRequest();
@@ -80,6 +91,7 @@ if (navigator.geolocation) {
       xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
           getNearby();
+          getTerrain(Math.round(json.latitude * 1000) / 1000, Math.round(json.longitude * 1000) / 1000);
         }
       };
       xhr.send(JSON.stringify(json));
@@ -93,7 +105,7 @@ if (navigator.geolocation) {
 window.setInterval(getNearby, 10000);
 </script>
 </head>
-<body onload="doGet(); renderTerrain(document.getElementById('terrain'), terrainData);" style="font-family: sans-serif;">
+<body onload="doGet();" style="font-family: sans-serif;">
 <div style="position: absolute; left: 0px; top: 0px; z-index: -1; width: 100%; height: 100%; overflow: hidden;">
 <div id="terrain">
 </div>
